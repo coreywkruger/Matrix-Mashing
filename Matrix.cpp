@@ -137,33 +137,39 @@ void matrix::print() {
 
 int main() {
 
-	matrix mym(3, 3);
-	mym.setVal(0, 0, 1);
-	mym.setVal(0, 1, 2);
-	mym.setVal(0, 2, -1);
+	matrix myMatrix(3, 3);
+	myMatrix.setVal(0, 0, 1);
+	myMatrix.setVal(0, 1, 2);
+	myMatrix.setVal(0, 2, -1);
 
-	mym.setVal(1, 0, 3);
-	mym.setVal(1, 1, 4);
-	mym.setVal(1, 2, 5);
+	myMatrix.setVal(1, 0, 3);
+	myMatrix.setVal(1, 1, 4);
+	myMatrix.setVal(1, 2, 5);
 
-	mym.setVal(2, 0, 8);
-	mym.setVal(2, 1, 6);
-	mym.setVal(2, 2, 7);
+	myMatrix.setVal(2, 0, 8);
+	myMatrix.setVal(2, 1, 6);
+	myMatrix.setVal(2, 2, 7);
 
-	mym.print();
-	matrix mr = mym.cofactorM(1, 2);
-	cout << endl;
-	mr.print();
+	cout << "First matrix:" << endl;
+	myMatrix.print();
+	matrix cof = myMatrix.cofactorM(1, 2);
 
 	cout  << endl;
-	cout << mym.getDet() << endl;
-	cout << "hello" << endl;
+	cout << "Determinant of first matrix:" << endl;
+	cout << myMatrix.getDet() << endl;
 
-	matrix newm = mym.inverse();
+	cout << endl;
+	cout << "Cofactor matrix of first entry in first matrix:" << endl;
+	cof.print();
+
+	cout << endl;
+	matrix newm = myMatrix.inverse();
+	cout << "Inverse of first matrix:" << endl;
 	newm.print();
 
-	cout << endl << endl;
-	matrix trans = mym.transpose();
+	cout << endl;
+	cout << "Transpose of first matrix:" << endl;
+	matrix trans = myMatrix.transpose();
 	trans.print();
 	return 0;
 }
