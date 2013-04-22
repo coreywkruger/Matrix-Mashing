@@ -21,6 +21,12 @@ public:
 	int getH();
 	int getW();
 	void print();
+	matrix operator+(matrix addthis);
+	matrix operator+(float addthis);
+	matrix operator-(matrix subthis);
+	matrix operator-(float subthis);
+	matrix operator*(matrix multhis);
+	matrix operator*(float multhis);
 private:
 	int height;
 	int width;
@@ -135,6 +141,97 @@ void matrix::print() {
 	}
 }
 
+matrix matrix::operator+(matrix addthis) {
+	if (getW() == addthis.getW() && getH() == addthis.getH()) {
+		matrix newMat(getW(), getH());
+		int i, j;
+		for (i = 0; i < getW(); i++) {
+			for (j = 0; j < getH(); j++) {
+				newMat.setVal(i, j, mat[i][j] + addthis.getVal(i, j));
+			}
+		}
+		return newMat;
+	} else {
+		cerr << "Matrices not eligible for addition: not of equal dimension." << endl;
+	}
+}
+
+matrix matrix::operator+(float addthis) {
+	matrix newMat(getW(), getH());
+	int i, j;
+	for (i = 0; i < getW(); i++) {
+		for (j = 0; j < getH(); j++) {
+			newMat.setVal(i, j, mat[i][j] + addthis);
+		}
+	}
+	return newMat;
+}
+
+
+
+matrix matrix::operator-(matrix addthis) {
+	if (getW() == addthis.getW() && getH() == addthis.getH()) {
+		matrix newMat(getW(), getH());
+		int i, j;
+		for (i = 0; i < getW(); i++) {
+			for (j = 0; j < getH(); j++) {
+				newMat.setVal(i, j, mat[i][j] - addthis.getVal(i, j));
+			}
+		}
+		return newMat;
+	} else {
+		cerr << "Matrices not eligible for subtraction: not of equal dimension." << endl;
+	}
+}
+
+matrix matrix::operator*(float multhis) {
+	matrix newMat(getW(), getH());
+	int i, j;
+	for (i = 0; i < getW(); i++) {
+		for (j = 0; j < getH(); j++) {
+			newMat.setVal(i, j, mat[i][j]*multhis);
+		}
+	}
+	return newMat;
+}
+
+
+matrix matrix::operator-(float addthis) {
+	matrix newMat(getW(), getH());
+	int i, j;
+	for (i = 0; i < getW(); i++) {
+		for (j = 0; j < getH(); j++) {
+			newMat.setVal(i, j, mat[i][j] - addthis);
+		}
+	}
+	return newMat;
+}
+
+
+
+
+matrix matrix::operator*(matrix multhis) {
+	if (getH() == multhis.getW()) {
+		matrix newMat(getH(), multhis.getW());
+		int i, j;
+		for (i = 0; i < newMat.getW(); i++) {
+			for (j = 0; j < newMat.getH(); j++) {
+				float val = 0;
+				int k;
+				for (k = 0; k < getW(); k++) {
+					val += mat[k][j]*multhis.getVal(i, k);
+				}
+				newMat.setVal(i, j, val);
+			}
+		}
+		return newMat;
+	} else {
+		cerr << "Matrices not eligible for multiplication: not of correct dimension." << endl;
+	}
+}
+
+
+
 int main() {
 
 	matrix myMatrix(3, 3);
@@ -171,5 +268,61 @@ int main() {
 	cout << "Transpose of first matrix:" << endl;
 	matrix trans = myMatrix.transpose();
 	trans.print();
+
+	cout << endl;
+	cout << "Operator '+' overloaded. Added 'matrix1 + matrix1'." << endl;
+	matrix adder = myMatrix + myMatrix;
+	adder.print();
+
+	cout << endl;
+	cout << "Operator '+' overloaded. Added 'matrix1 + 10'." << endl;
+	matrix adderFloat = myMatrix + 10;
+	adderFloat.print();
+	cout << endl;
+
+	cout << endl;
+	cout << "Operator '-' overloaded. Subtracted '(previous matrix) - matrix1'." << endl;
+	matrix subM =  adderFloat - myMatrix;
+	subM.print();
+
+	cout << endl;
+	cout << "Operator '-' overloaded. Subtracted '(all 10s matrix) - 1'." << endl;
+	matrix subFloat =  subM - 1;
+	subFloat.print();
+
+	cout << endl;
+	cout << "Operator '*' overloaded. Multiplied 'matrix1 * (all 10s matrix)'." << endl;
+	matrix mulM = myMatrix*subM;
+	mulM.print();
+
+
+	matrix am1(2, 3);
+	am1.setVal(0, 0, 1);
+	am1.setVal(0, 1, 2);
+	am1.setVal(0, 2, 3);
+	am1.setVal(1, 0, 4);
+	am1.setVal(1, 1, 5);
+	am1.setVal(1, 2, 6);
+
+
+	matrix am2(3, 2);
+	am2.setVal(0, 0, 1);
+	am2.setVal(0, 1, 2);
+	am2.setVal(1, 0, 3);
+	am2.setVal(1, 1, 4);
+	am2.setVal(2, 0, 5);
+	am2.setVal(2, 1, 6);
+
+
+	cout << endl << endl;
+	cout << "Two Matrices of eligible dimensions are multiplied to form a new matrix:" << endl;
+	cout << "(Note: width of first must equal height of second or vis-versa)" << endl;
+	cout << "\nFirst 2x3 matrix:" << endl;
+	am1.print();
+	cout << "second 3x2 matrix:" << endl;
+	am2.print();
+	cout << "Now multiplied together:" << endl;
+	matrix multy = am1*am2;
+	multy.print();
 	return 0;
 }
